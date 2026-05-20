@@ -66,8 +66,8 @@ teardown() {
 @test "install from release" {
   set -eu -o pipefail
   cd ${TESTDIR}
-  echo "# ddev add-on get alan-purple/ddev-supabase" >&3
-  ddev add-on get alan-purple/ddev-supabase
+  echo "# ddev add-on get Farkie/ddev-supabase" >&3
+  ddev add-on get Farkie/ddev-supabase
   ddev restart >/dev/null
   health_checks
 }

@@ -12,7 +12,7 @@ This addon includes: Studio dashboard, Kong API gateway, GoTrue auth, PostgREST,
 ## Installation
 
 ```bash
-ddev add-on get your-github-user/ddev-supabase
+ddev add-on get Farkie/ddev-supabase
 ddev restart
 ```
 
