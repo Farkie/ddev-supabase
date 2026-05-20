@@ -1,0 +1,36 @@
+name: ddev-supabase
+ddev_version_constraint: ">=v1.24.0"
+
+project_files:
+  - docker-compose.supabase.yaml
+  - supabase/.env.example
+  - supabase/volumes/api/kong.yml
+  - supabase/volumes/api/kong-entrypoint.sh
+  - supabase/volumes/db/_supabase.sql
+  - supabase/volumes/db/jwt.sql
+  - supabase/volumes/db/logs.sql
+  - supabase/volumes/db/pooler.sql
+  - supabase/volumes/db/realtime.sql
+  - supabase/volumes/db/roles.sql
+  - supabase/volumes/db/webhooks.sql
+  - supabase/volumes/logs/vector.yml
+  - supabase/volumes/pooler/pooler.exs
+  - commands/host/supabase
+
+post_install_actions:
+  - |
+    if [ ! -f supabase/.env ]; then
+      cp supabase/.env.example supabase/.env
+      echo ""
+      echo "Supabase addon installed!"
+      echo "  - Edit .ddev/supabase/.env to set passwords and keys"
+      echo "  - Run: ddev restart"
+      echo "  - Then: ddev supabase  (shows connection info)"
+    fi
+  - chmod +x supabase/volumes/api/kong-entrypoint.sh
+  - mkdir -p supabase/volumes/db/init supabase/volumes/functions supabase/volumes/snippets supabase/volumes/storage
+
+removal_actions:
+  - echo "Note: .ddev/supabase/.env was not removed - delete it manually if desired"
+  - echo "Note: Docker volumes supabase-db-data, supabase-storage-data were not removed"
+  - echo "      To remove: docker volume rm \$(docker volume ls -q | grep supabase-)"

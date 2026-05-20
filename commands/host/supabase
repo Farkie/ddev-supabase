@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+## Description: Show Supabase connection info and status
+## Usage: supabase
+## Example: ddev supabase
+## HostWorkingDir: true
+
+SITENAME="${DDEV_SITENAME}"
+DDEV_DIR="${DDEV_APPROOT}/.ddev"
+ENV_FILE="${DDEV_DIR}/supabase/.env"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "Supabase addon is not configured. Run: ddev add-on get PATH_TO_ADDON"
+  exit 1
+fi
+
+# Read key vars from env file
+DASHBOARD_USERNAME=$(grep '^DASHBOARD_USERNAME=' "$ENV_FILE" | cut -d= -f2)
+DASHBOARD_PASSWORD=$(grep '^DASHBOARD_PASSWORD=' "$ENV_FILE" | cut -d= -f2)
+ANON_KEY=$(grep '^ANON_KEY=' "$ENV_FILE" | cut -d= -f2)
+SERVICE_ROLE_KEY=$(grep '^SERVICE_ROLE_KEY=' "$ENV_FILE" | cut -d= -f2)
+POSTGRES_PASSWORD=$(grep '^SUPABASE_POSTGRES_PASSWORD=' "$ENV_FILE" | cut -d= -f2)
+
+echo ""
+echo "=== Supabase (DDEV project: ${SITENAME}) ==="
+echo ""
+echo "Studio / API:    http://localhost:8000"
+echo "  Dashboard user: ${DASHBOARD_USERNAME:-supabase}"
+echo "  Dashboard pass: ${DASHBOARD_PASSWORD}"
+echo ""
+echo "Database (via Supavisor):"
+echo "  Host:     localhost"
+echo "  Port:     54322"
+echo "  User:     postgres"
+echo "  Password: ${POSTGRES_PASSWORD}"
+echo "  Database: postgres"
+echo ""
+echo "  Connection string:"
+echo "  postgresql://postgres:${POSTGRES_PASSWORD}@localhost:54322/postgres"
+echo ""
+echo "API Keys:"
+echo "  anon key:         ${ANON_KEY}"
+echo "  service_role key: ${SERVICE_ROLE_KEY}"
+echo ""
+echo "Supabase JS client config:"
+echo "  const supabaseUrl = 'http://localhost:8000'"
+echo "  const supabaseKey = '${ANON_KEY}'"
+echo ""

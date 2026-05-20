@@ -1,0 +1,3 @@
+supabase/.env
+supabase/volumes/db/data/
+supabase/volumes/storage/
