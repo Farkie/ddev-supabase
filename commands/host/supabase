@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#ddev-generated
 ## Description: Show Supabase connection info and status
 ## Usage: supabase
 ## Example: ddev supabase

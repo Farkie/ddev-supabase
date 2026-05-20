@@ -1,3 +1,4 @@
+-- #ddev-generated
 \set pguser `echo "$POSTGRES_USER"`
 
 \c _supabase

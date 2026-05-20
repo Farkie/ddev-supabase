@@ -1,3 +1,4 @@
+# ddev-generated
 {:ok, _} = Application.ensure_all_started(:supavisor)
 
 {:ok, version} =

@@ -1,3 +1,4 @@
+-- #ddev-generated
 \set jwt_secret `echo "$JWT_SECRET"`
 \set jwt_exp `echo "$JWT_EXP"`
 

@@ -92,9 +92,29 @@ Key settings to change for any non-trivial use:
 
 To generate new JWT keys, use the [Supabase JWT generator](https://supabase.com/docs/guides/self-hosting#api-keys) or `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`.
 
+## Optional Services
+
+Three services are disabled by default. Enable them by renaming the file to remove `.disabled`:
+
+```bash
+# Analytics + log aggregation (Logflare + Vector)
+mv .ddev/docker-compose.supabase-analytics.yaml.disabled .ddev/docker-compose.supabase-analytics.yaml
+
+# Image transformations (imgproxy)
+mv .ddev/docker-compose.supabase-imgproxy.yaml.disabled .ddev/docker-compose.supabase-imgproxy.yaml
+# Also set in .ddev/supabase/.env:
+#   ENABLE_IMAGE_TRANSFORMATION=true
+#   IMGPROXY_URL=http://imgproxy:5001
+
+# Edge Functions (Deno runtime)
+mv .ddev/docker-compose.supabase-functions.yaml.disabled .ddev/docker-compose.supabase-functions.yaml
+```
+
+Then run `ddev restart`.
+
 ## Edge Functions
 
-Place your Deno edge functions in `.ddev/supabase/volumes/functions/`. They are served at `http://localhost:8000/functions/v1/{function-name}`.
+Enable the edge functions service first (see above), then place Deno functions in `.ddev/supabase/volumes/functions/{name}/index.ts`. They are served at `http://localhost:8000/functions/v1/{name}`.
 
 ## Removing the addon
 

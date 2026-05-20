@@ -3,6 +3,9 @@ ddev_version_constraint: ">=v1.24.0"
 
 project_files:
   - docker-compose.supabase.yaml
+  - docker-compose.supabase-analytics.yaml.disabled
+  - docker-compose.supabase-imgproxy.yaml.disabled
+  - docker-compose.supabase-functions.yaml.disabled
   - supabase/.env.example
   - supabase/volumes/api/kong.yml
   - supabase/volumes/api/kong-entrypoint.sh
@@ -15,6 +18,7 @@ project_files:
   - supabase/volumes/db/webhooks.sql
   - supabase/volumes/logs/vector.yml
   - supabase/volumes/pooler/pooler.exs
+  - supabase/volumes/functions/main/index.ts
   - commands/host/supabase
 
 post_install_actions:
@@ -26,6 +30,11 @@ post_install_actions:
       echo "  - Edit .ddev/supabase/.env to set passwords and keys"
       echo "  - Run: ddev restart"
       echo "  - Then: ddev supabase  (shows connection info)"
+      echo ""
+      echo "Optional services (rename to enable):"
+      echo "  docker-compose.supabase-analytics.yaml.disabled  -> analytics + logging"
+      echo "  docker-compose.supabase-imgproxy.yaml.disabled   -> image transformations"
+      echo "  docker-compose.supabase-functions.yaml.disabled  -> edge functions"
     fi
   - chmod +x supabase/volumes/api/kong-entrypoint.sh
   - mkdir -p supabase/volumes/db/init supabase/volumes/functions supabase/volumes/snippets supabase/volumes/storage
@@ -33,5 +42,4 @@ post_install_actions:
 removal_actions:
   - |
     echo "Note: .ddev/supabase/.env was not removed - delete it manually if desired"
-    echo "Note: Docker volumes supabase-db-data, supabase-storage-data were not removed"
     echo "To remove volumes: docker volume rm \$(docker volume ls -q | grep supabase-)"

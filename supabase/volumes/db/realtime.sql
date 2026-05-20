@@ -1,3 +1,4 @@
+-- #ddev-generated
 \set pguser `echo "$POSTGRES_USER"`
 
 create schema if not exists _realtime;

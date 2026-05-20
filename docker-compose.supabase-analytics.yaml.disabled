@@ -1,0 +1,67 @@
+#ddev-generated
+# Supabase analytics + log aggregation (optional)
+# To enable: rename this file to docker-compose.supabase-analytics.yaml
+# Also set NEXT_PUBLIC_ENABLE_LOGS=true and LOGFLARE_URL=http://analytics:4000 in supabase/.env
+
+services:
+
+  analytics:
+    container_name: supabase-analytics
+    image: supabase/logflare:1.36.1
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -sSfL -o /dev/null http://localhost:4000/health"
+        ]
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+    env_file: ./supabase/.env
+    environment:
+      LOGFLARE_NODE_HOST: 127.0.0.1
+      DB_USERNAME: supabase_admin
+      DB_DATABASE: _supabase
+      DB_HOSTNAME: supabase-db
+      LOGFLARE_SINGLE_TENANT: "true"
+      LOGFLARE_SUPABASE_MODE: "true"
+      POSTGRES_BACKEND_SCHEMA: _analytics
+      LOGFLARE_FEATURE_FLAG_OVERRIDE: multibackend=true
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}
+
+  vector:
+    container_name: supabase-vector
+    image: timberio/vector:0.53.0-alpine
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://vector:9001/health"
+        ]
+      timeout: 5s
+      interval: 5s
+      retries: 3
+    depends_on:
+      analytics:
+        condition: service_healthy
+    env_file: ./supabase/.env
+    volumes:
+      - ./supabase/volumes/logs/vector.yml:/etc/vector/vector.yml:ro,z
+      - /var/run/docker.sock:/var/run/docker.sock:ro,z
+    command: ["--config", "/etc/vector/vector.yml"]
+    security_opt:
+      - "label=disable"
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}

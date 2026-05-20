@@ -1,0 +1,33 @@
+#ddev-generated
+# Supabase Edge Functions runtime (optional)
+# To enable: rename this file to docker-compose.supabase-functions.yaml
+# Place your Deno functions in .ddev/supabase/volumes/functions/{function-name}/index.ts
+# They will be served at http://localhost:8000/functions/v1/{function-name}
+
+services:
+
+  functions:
+    container_name: supabase-edge-functions
+    image: supabase/edge-runtime:v1.71.2
+    restart: unless-stopped
+    depends_on:
+      kong:
+        condition: service_healthy
+    env_file: ./supabase/.env
+    environment:
+      SUPABASE_URL: http://kong:8000
+    volumes:
+      - ./supabase/volumes/functions:/home/deno/functions:Z
+      - supabase-deno-cache:/root/.cache/deno
+    command:
+      [
+        "start",
+        "--main-service",
+        "/home/deno/functions/main"
+      ]
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}
+
+volumes:
+  supabase-deno-cache:
