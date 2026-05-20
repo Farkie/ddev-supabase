@@ -31,6 +31,7 @@ post_install_actions:
   - mkdir -p supabase/volumes/db/init supabase/volumes/functions supabase/volumes/snippets supabase/volumes/storage
 
 removal_actions:
-  - echo "Note: .ddev/supabase/.env was not removed - delete it manually if desired"
-  - echo "Note: Docker volumes supabase-db-data, supabase-storage-data were not removed"
-  - echo "      To remove: docker volume rm \$(docker volume ls -q | grep supabase-)"
+  - |
+    echo "Note: .ddev/supabase/.env was not removed - delete it manually if desired"
+    echo "Note: Docker volumes supabase-db-data, supabase-storage-data were not removed"
+    echo "To remove volumes: docker volume rm \$(docker volume ls -q | grep supabase-)"
