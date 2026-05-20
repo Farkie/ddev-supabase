@@ -34,7 +34,7 @@ ddev supabase
 
 | Service | URL / Connection |
 |---------|----------------|
-| Studio dashboard | http://localhost:8000 |
+| Studio dashboard | https://&lt;sitename&gt;.ddev.site:54324 |
 | REST API | http://localhost:8000/rest/v1/ |
 | Auth | http://localhost:8000/auth/v1/ |
 | Storage | http://localhost:8000/storage/v1/ |
@@ -145,5 +145,5 @@ Edit `.ddev/docker-compose.supabase.yaml` and update the image tags, then run `d
 docker logs supabase-db
 docker logs supabase-kong
 docker logs supabase-auth
-docker logs supabase-studio
+docker logs ddev-&lt;sitename&gt;-studio
 ```

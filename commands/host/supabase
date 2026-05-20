@@ -19,14 +19,16 @@ DASHBOARD_USERNAME=$(grep '^DASHBOARD_USERNAME=' "$ENV_FILE" | cut -d= -f2)
 DASHBOARD_PASSWORD=$(grep '^DASHBOARD_PASSWORD=' "$ENV_FILE" | cut -d= -f2)
 ANON_KEY=$(grep '^ANON_KEY=' "$ENV_FILE" | cut -d= -f2)
 SERVICE_ROLE_KEY=$(grep '^SERVICE_ROLE_KEY=' "$ENV_FILE" | cut -d= -f2)
-POSTGRES_PASSWORD=$(grep '^SUPABASE_POSTGRES_PASSWORD=' "$ENV_FILE" | cut -d= -f2)
+POSTGRES_PASSWORD=$(grep '^POSTGRES_PASSWORD=' "$ENV_FILE" | cut -d= -f2)
 
 echo ""
 echo "=== Supabase (DDEV project: ${SITENAME}) ==="
 echo ""
-echo "Studio / API:    http://localhost:8000"
-echo "  Dashboard user: ${DASHBOARD_USERNAME:-supabase}"
-echo "  Dashboard pass: ${DASHBOARD_PASSWORD}"
+echo "Studio dashboard: https://${SITENAME}.ddev.site:54324"
+echo "  user: ${DASHBOARD_USERNAME:-supabase}"
+echo "  pass: ${DASHBOARD_PASSWORD}"
+echo ""
+echo "Kong API gateway: http://localhost:8000"
 echo ""
 echo "Database (via Supavisor):"
 echo "  Host:     localhost"
